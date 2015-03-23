@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+    </style>
+
+    <style name="AppTheme_Fullscreen" parent="Theme.AppCompat.NoActionBar">
+
+    </style>
+
+</resources>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Phoenix</string>
+    <string name="action_load">Load</string>
+    <string name="api_key">36db8788b9add2cc19baf1e03d833cd4</string>
+    <string name="api_images">https://api.flickr.com/services/rest?extras=date_taken,realname,Curl_c,url_h,url_k,url_l,url_m,url_n,url_o,url_q,url_s,url_sq,url_t,url_z,visibility,o_dims&amp;per_page=50&amp;page=%1$d&amp;sort=relevance&amp;advanced=1&amp;text=landscape&amp;method=flickr.photos.search&amp;api_key=%2$s&amp;format=json&amp;nojsoncallback=1</string>
+</resources>
