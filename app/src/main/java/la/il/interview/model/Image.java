@@ -15,6 +15,11 @@ import la.il.interview.utils.Lists;
  * @author Amir Lazarovich
  */
 public class Image {
+    private static final int NOT_DEFINED = -1;
+    private static int mIdColumnIndex = NOT_DEFINED;
+    private static int mUrlColumnIndex = NOT_DEFINED;
+    private static int mTitleColumnIndex = NOT_DEFINED;
+
     public String id;
     @SerializedName("url_l") public String url;
     public String title;
@@ -79,6 +84,42 @@ public class Image {
             return (rows == 1);
         } else {
             return false;
+        }
+    }
+
+    public static void clearAll(Context context) {
+        context.getContentResolver().delete(Images.CONTENT_URI, null, null);
+    }
+
+    public static String getColumnValue(Cursor cursor, String column) {
+        if (cursor != null) {
+            return cursor.getString(Image.getColumnIndex(cursor, column));
+        } else {
+            return null;
+        }
+    }
+
+    private static int getColumnIndex(Cursor cursor, String column) {
+        if (column.equals(Images.IMAGE_ID)) {
+            if (mIdColumnIndex == NOT_DEFINED) {
+                mIdColumnIndex = cursor.getColumnIndex(column);
+            }
+
+            return mIdColumnIndex;
+        } else if (column.equals(Images.IMAGE_TITLE)) {
+            if (mTitleColumnIndex == NOT_DEFINED) {
+                mTitleColumnIndex = cursor.getColumnIndex(column);
+            }
+
+            return mTitleColumnIndex;
+        } else if (column.equals(Images.IMAGE_URL)) {
+            if (mUrlColumnIndex == NOT_DEFINED) {
+                mUrlColumnIndex = cursor.getColumnIndex(column);
+            }
+
+            return mUrlColumnIndex;
+        } else {
+            throw new IllegalArgumentException("Unknown column: " + column);
         }
     }
 }

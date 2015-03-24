@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import la.il.interview.data.DataContract.HistoryColumns;
 import la.il.interview.data.DataContract.ImagesColumns;
 
 import static la.il.interview.utils.LogUtils.LOGD;
@@ -22,14 +23,15 @@ public class DataDatabase extends SQLiteOpenHelper {
     // NOTE: carefully update onUpgrade() when bumping database versions to make
     // sure user data is saved.
 
-    private static final int VER_1 = 1;
-    private static final int CUR_DATABASE_VERSION = VER_1;
+    private static final int VER_BASE = 2;
+    private static final int CUR_DATABASE_VERSION = VER_BASE;
 
     // TODO we'll need this when using a sync adapter
     private final Context mContext;
 
     interface Tables {
         String IMAGES = "images";
+        String HISTORY = "history";
     }
 
     public DataDatabase(Context context) {
@@ -45,6 +47,11 @@ public class DataDatabase extends SQLiteOpenHelper {
                 + ImagesColumns.IMAGE_TITLE + " TEXT DEFAULT 'Unknown',"
                 + ImagesColumns.IMAGE_URL + " INTEGER NOT NULL,"
                 + "UNIQUE (" + ImagesColumns.IMAGE_ID + ") ON CONFLICT REPLACE)");
+
+        db.execSQL("CREATE TABLE " + Tables.HISTORY + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + HistoryColumns.HISTORY_TERM + " TEXT NOT NULL,"
+                + HistoryColumns.HISTORY_TIMESTAMP + " INTEGER NOT NULL)");
     }
 
     @Override
@@ -68,6 +75,7 @@ public class DataDatabase extends SQLiteOpenHelper {
             LOGW(TAG, "Upgrade unsuccessful -- destroying old data during upgrade");
 
             db.execSQL("DROP TABLE IF EXISTS " + Tables.IMAGES);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.HISTORY);
 
             onCreate(db);
             version = CUR_DATABASE_VERSION;

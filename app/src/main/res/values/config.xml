@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="localhost">false</bool>
+    <string name="api_images">https://api.flickr.com/services/rest?extras=date_taken,realname,Curl_c,url_h,url_k,url_l,url_m,url_n,url_o,url_q,url_s,url_sq,url_t,url_z,visibility,o_dims&amp;per_page=50&amp;page=%1$d&amp;sort=relevance&amp;advanced=1&amp;text=%3$s&amp;method=flickr.photos.search&amp;api_key=%2$s&amp;format=json&amp;nojsoncallback=1</string>
+    <string name="get_flickr_api_key">https://www.flickr.com/search?q=test</string>
+    <string name="default_search_criteria">landscape</string>
+</resources>

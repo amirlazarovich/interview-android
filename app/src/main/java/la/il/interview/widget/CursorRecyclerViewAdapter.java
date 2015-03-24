@@ -27,6 +27,8 @@ import android.support.v7.widget.RecyclerView;
  */
 public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
+    public static final int POSITION_HEADER = -1;
+
     private Context mContext;
 
     private Cursor mCursor;
@@ -37,15 +39,22 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
 
     private DataSetObserver mDataSetObserver;
 
+    private boolean headerEnabled;
+
     public CursorRecyclerViewAdapter(Context context, Cursor cursor) {
         mContext = context;
         mCursor = cursor;
         mDataValid = cursor != null;
+        headerEnabled = false;
         mRowIdColumn = mDataValid ? mCursor.getColumnIndex("_id") : -1;
         mDataSetObserver = new NotifyingDataSetObserver();
         if (mCursor != null) {
             mCursor.registerDataSetObserver(mDataSetObserver);
         }
+    }
+
+    public void enableHeader(boolean enabled) {
+        this.headerEnabled = enabled;
     }
 
     public Cursor getCursor() {
@@ -55,9 +64,9 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
     @Override
     public int getItemCount() {
         if (mDataValid && mCursor != null) {
-            return mCursor.getCount();
+            return mCursor.getCount() + (headerEnabled ? 1 : 0);
         }
-        return 0;
+        return (headerEnabled ? 1 : 0);
     }
 
     @Override
@@ -77,13 +86,17 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(VH viewHolder, int position) {
+        if (headerEnabled && position == 0) {
+            onBindViewHolder(viewHolder, null, POSITION_HEADER);
+            return;
+        }
         if (!mDataValid) {
             throw new IllegalStateException("this should only be called when the cursor is valid");
         }
-        if (!mCursor.moveToPosition(position)) {
+        if (!mCursor.moveToPosition(position + (headerEnabled ? -1 : 0))) {
             throw new IllegalStateException("couldn't move cursor to position " + position);
         }
-        onBindViewHolder(viewHolder, mCursor, position);
+        onBindViewHolder(viewHolder, mCursor, position + (headerEnabled ? -1 : 0));
     }
 
     /**

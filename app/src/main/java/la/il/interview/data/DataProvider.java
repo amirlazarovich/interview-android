@@ -12,18 +12,24 @@ import android.util.Log;
 
 import java.util.Arrays;
 
+import la.il.interview.data.DataContract.History;
 import la.il.interview.data.DataContract.Images;
 import la.il.interview.data.DataDatabase.Tables;
 import la.il.interview.utils.SelectionBuilder;
 
-import static la.il.interview.utils.LogUtils.*;
+import static la.il.interview.utils.LogUtils.LOGD;
+import static la.il.interview.utils.LogUtils.LOGV;
+import static la.il.interview.utils.LogUtils.makeLogTag;
 
 public class DataProvider extends ContentProvider {
     private static final String TAG = makeLogTag(DataProvider.class);
     private DataDatabase mOpenHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+
     private static final int IMAGES = 100;
     private static final int IMAGES_ID = 101;
+    private static final int HISTORY = 200;
+    private static final int HISTORY_ID = 201;
 
     public DataProvider() {
     }
@@ -34,6 +40,9 @@ public class DataProvider extends ContentProvider {
 
         matcher.addURI(authority, "images", IMAGES);
         matcher.addURI(authority, "images/*", IMAGES_ID);
+
+        matcher.addURI(authority, "history", HISTORY);
+        matcher.addURI(authority, "history/*", HISTORY_ID);
 
         return matcher;
     }
@@ -84,14 +93,18 @@ public class DataProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         switch (match) {
-            case IMAGES: {
+            case IMAGES:
                 db.insertOrThrow(Tables.IMAGES, null, values);
                 notifyChange(uri);
                 return Images.buildImageUri(values.getAsString(Images.IMAGE_ID));
-            }
-            default: {
+
+            case HISTORY:
+                long id = db.insertOrThrow(Tables.HISTORY, null, values);
+                notifyChange(uri);
+                return History.buildHistoryUri(id);
+
+            default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
-            }
         }
     }
 
@@ -132,8 +145,15 @@ public class DataProvider extends ContentProvider {
         switch (match) {
             case IMAGES:
                 return Images.CONTENT_TYPE;
+
             case IMAGES_ID:
                 return Images.CONTENT_ITEM_TYPE;
+
+            case HISTORY:
+                return History.CONTENT_TYPE;
+
+            case HISTORY_ID:
+                return History.CONTENT_ITEM_TYPE;
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -147,13 +167,21 @@ public class DataProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         final SelectionBuilder builder = new SelectionBuilder();
         switch (match) {
-            case IMAGES: {
+            case IMAGES:
                 return builder.table(Tables.IMAGES);
-            }
-            case IMAGES_ID: {
+
+            case IMAGES_ID:
                 final String imageId = Images.getImageId(uri);
                 return builder.table(Tables.IMAGES)
                         .where(Images.IMAGE_ID + "=?", imageId);
+
+            case HISTORY: {
+                return builder.table(Tables.HISTORY);
+            }
+            case HISTORY_ID: {
+                final String historyId = History.getHistoryId(uri);
+                return builder.table(Tables.HISTORY)
+                        .where(History._ID + "=?", historyId);
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

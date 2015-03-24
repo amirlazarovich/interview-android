@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import la.il.interview.data.ApiManager;
 import la.il.interview.data.ApiManager.Callback;
+import la.il.interview.model.Image;
 
 import static la.il.interview.utils.LogUtils.LOGW;
 import static la.il.interview.utils.LogUtils.makeLogTag;
@@ -23,7 +24,7 @@ public class MainActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content, new ListFragment());
+            transaction.replace(R.id.content, new ImagesFragment());
             transaction.commit();
         }
     }
@@ -42,6 +43,10 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
+    private void clearItems() {
+        Image.clearAll(this);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -53,6 +58,10 @@ public class MainActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case R.id.action_load:
                 loadItems();
+                return true;
+
+            case R.id.action_clear:
+                clearItems();
                 return true;
         }
 
