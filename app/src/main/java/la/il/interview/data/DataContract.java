@@ -97,6 +97,6 @@ public class DataContract {
     }
 
     public static boolean hasCallerIsSyncAdapterParameter(Uri uri) {
-        return TextUtils.equals("true",uri.getQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER));
+        return TextUtils.equals("true", uri.getQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER));
     }
 }

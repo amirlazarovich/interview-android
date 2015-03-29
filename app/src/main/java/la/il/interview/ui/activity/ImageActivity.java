@@ -1,4 +1,4 @@
-package la.il.interview;
+package la.il.interview.ui.activity;
 
 import android.content.Intent;
 import android.os.Build.VERSION;
@@ -10,6 +10,8 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+
+import la.il.interview.R;
 
 
 public class ImageActivity extends ActionBarActivity {

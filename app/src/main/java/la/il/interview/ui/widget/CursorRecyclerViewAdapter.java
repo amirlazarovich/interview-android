@@ -1,4 +1,4 @@
-package la.il.interview.widget;
+package la.il.interview.ui.widget;
 
 /*
  * Copyright (C) 2014 skyfish.jy@gmail.com

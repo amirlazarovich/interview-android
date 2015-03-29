@@ -7,6 +7,7 @@ import android.provider.BaseColumns;
 
 import la.il.interview.data.DataContract.HistoryColumns;
 import la.il.interview.data.DataContract.ImagesColumns;
+import la.il.interview.sync.SyncHelper;
 
 import static la.il.interview.utils.LogUtils.LOGD;
 import static la.il.interview.utils.LogUtils.LOGW;
@@ -58,7 +59,8 @@ public class DataDatabase extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         LOGD(TAG, "onUpgrade() from " + oldVersion + " to " + newVersion);
 
-        // TODO Cancel any sync currently in progress
+        // Cancel any sync currently in progress
+        SyncHelper.cancelSync(mContext);
 
         // Current DB version. We update this variable as we perform upgrades to reflect
         // the current version we are in.
@@ -83,7 +85,7 @@ public class DataDatabase extends SQLiteOpenHelper {
 
         if (dataInvalidated) {
             LOGD(TAG, "Data invalidated; resetting our data timestamp.");
-            // TODO request manual sync
+            SyncHelper.requestManualSync(mContext);
         }
     }
 

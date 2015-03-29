@@ -1,4 +1,4 @@
-package la.il.interview;
+package la.il.interview.ui.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -40,12 +40,14 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import la.il.interview.R;
+import la.il.interview.ui.activity.ImageActivity;
 import la.il.interview.data.DataContract.Images;
 import la.il.interview.model.Image;
-import la.il.interview.widget.CursorRecyclerViewAdapter;
-import la.il.interview.widget.MutableCursor;
-import la.il.interview.widget.SwipeDismissRecyclerViewTouchListener;
-import la.il.interview.widget.SwipeDismissTouchListener;
+import la.il.interview.ui.widget.CursorRecyclerViewAdapter;
+import la.il.interview.ui.widget.MutableCursor;
+import la.il.interview.ui.widget.SwipeDismissRecyclerViewTouchListener;
+import la.il.interview.ui.widget.SwipeDismissTouchListener;
 
 import static la.il.interview.utils.LogUtils.makeLogTag;
 

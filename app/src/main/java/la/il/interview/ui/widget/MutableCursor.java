@@ -1,4 +1,4 @@
-package la.il.interview.widget;
+package la.il.interview.ui.widget;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;

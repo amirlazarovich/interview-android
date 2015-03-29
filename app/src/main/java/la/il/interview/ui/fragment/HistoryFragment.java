@@ -1,4 +1,4 @@
-package la.il.interview;
+package la.il.interview.ui.fragment;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -16,12 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import la.il.interview.R;
 import la.il.interview.data.DataContract.History;
 import la.il.interview.model.HistoryItem;
-import la.il.interview.widget.CursorRecyclerViewAdapter;
-import la.il.interview.widget.MutableCursor;
-import la.il.interview.widget.SwipeDismissRecyclerViewTouchListener;
-import la.il.interview.widget.SwipeDismissTouchListener;
+import la.il.interview.ui.widget.CursorRecyclerViewAdapter;
+import la.il.interview.ui.widget.MutableCursor;
+import la.il.interview.ui.widget.SwipeDismissRecyclerViewTouchListener;
+import la.il.interview.ui.widget.SwipeDismissTouchListener;
 
 import static la.il.interview.utils.LogUtils.makeLogTag;
 

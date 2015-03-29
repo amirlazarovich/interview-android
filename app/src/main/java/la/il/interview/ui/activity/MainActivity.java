@@ -1,6 +1,7 @@
-package la.il.interview;
+package la.il.interview.ui.activity;
 
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,10 +17,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import la.il.interview.R;
 import la.il.interview.data.ApiManager;
 import la.il.interview.data.ApiManager.Callback;
+import la.il.interview.data.DataContract.History;
 import la.il.interview.model.HistoryItem;
 import la.il.interview.model.Image;
+import la.il.interview.sync.SyncHelper;
+import la.il.interview.ui.fragment.HistoryFragment;
+import la.il.interview.ui.fragment.ImagesFragment;
 
 import static la.il.interview.utils.LogUtils.LOGW;
 import static la.il.interview.utils.LogUtils.makeLogTag;
@@ -27,7 +33,7 @@ import static la.il.interview.utils.LogUtils.makeLogTag;
 /**
  * @author Amir Lazarovich
  */
-public class MainNavActivity extends ActionBarActivity implements OnItemClickListener {
+public class MainActivity extends ActionBarActivity implements OnItemClickListener {
     private static final String TAG = makeLogTag(MainActivity.class);
 
     private static int page = 1;
@@ -37,11 +43,13 @@ public class MainNavActivity extends ActionBarActivity implements OnItemClickLis
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private ContentObserver mObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_nav);
+        setContentView(R.layout.activity_main);
+        SyncHelper.registerAccount(this);
 
         // set main content
         if (savedInstanceState == null) {
@@ -128,7 +136,6 @@ public class MainNavActivity extends ActionBarActivity implements OnItemClickLis
                 HistoryItem.clearAll(this);
                 break;
         }
-
     }
 
     @Override
@@ -201,5 +208,20 @@ public class MainNavActivity extends ActionBarActivity implements OnItemClickLis
     public void setTitle(CharSequence title) {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mObserver = SyncHelper.registerContentObserver(this, History.CONTENT_URI);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mObserver != null) {
+            SyncHelper.unregisterContentObserver(this, mObserver);
+            mObserver = null;
+        }
     }
 }

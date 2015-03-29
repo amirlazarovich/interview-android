@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import la.il.interview.ImagesFragment;
+import la.il.interview.ui.fragment.ImagesFragment;
 import la.il.interview.R;
 import la.il.interview.model.HistoryItem;
 import la.il.interview.model.Image;
